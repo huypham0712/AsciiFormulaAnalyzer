@@ -58,18 +58,70 @@ namespace AsciiFormulaAnalyzer
 
         private void SimplifyTruthTable()
         {
-            TruthTable myTruthTable = myTree.TruthTable;
-            List<int[]> truthTableValues = TruthTableHelper.GetPreComputeValues(myTree.Variables);
-            List<int> truthTableResult = myTruthTable.ComputeTruthTable();
-            List<string[]> preSimplifiedValue = TruthTableHelper.GetPreSimplifyValues(truthTableValues, truthTableResult, myTree.Variables);
+            if (myTree.MainFormula == null)
+            {
+                MessageBox.Show("Could not provide a truth table for an empty formula!!", "Error");
+                return;
+            }
+            try
+            {
+                //Compute truth value
+                TruthTable myTruthTable = myTree.TruthTable;
+                var truthTableValues = TruthTableHelper.GetPreComputeValues(myTree.Variables);
+                var truthTableResult = myTruthTable.ComputeTruthTable();
+                var preSimplifiedValue = TruthTableHelper.GetPreSimplifyValues(truthTableValues, truthTableResult, myTree.Variables);
+                var result = myTruthTable.Simplify(preSimplifiedValue);
+                var falseRows = TruthTableHelper.GetFalseRows(truthTableValues, truthTableResult, myTree.Variables);
 
-            //List<string[]> simplifiedResult = myTruthTable.Simplify(preSimplifiedValue);
-            myTruthTable.SimplifyAnotherVersion(preSimplifiedValue);
+                //Setup DataGridView
+                dgvSimplifiedTruthTable.ColumnCount = myTruthTable.NumberOfColumn + 1;
+                dgvSimplifiedTruthTable.RowCount = falseRows.Count + result[0].Count;
+                dgvSimplifiedTruthTable.Name = "Simplified Truth Table";
+                dgvSimplifiedTruthTable.RowHeadersVisible = false;
+                dgvSimplifiedTruthTable.AutoSize = true;
+
+                for (int i = 0; i < myTruthTable.NumberOfColumn; i++)
+                {
+                    dgvSimplifiedTruthTable.Columns[i].Name = myTruthTable.Variables[i].Proposition.ToString();
+                }
+
+                dgvSimplifiedTruthTable.Columns[dgvTruthTable.ColumnCount - 1].Name = originalFormula;
+                dgvSimplifiedTruthTable.Rows.Clear();
+
+                for (int j = 0; j < falseRows.Count; j++)
+                {
+                    string[] rows = new string[falseRows[j].Length + 1];
+                    falseRows[j].CopyTo(rows,0);
+                    rows[falseRows[j].Length] = "0";
+                    dgvSimplifiedTruthTable.Rows.Add(rows);                
+                }
+
+                for (int i = 0; i < result[0].Count; i++)
+                {
+                    string[] rows = new string[result[0][i].Length + 1];
+                    result[0][i].CopyTo(rows, 0);
+                    rows[result[0][i].Length] = "1";
+                    dgvSimplifiedTruthTable.Rows.Add(rows);
+                }
+
+                foreach (DataGridViewColumn column in dgvSimplifiedTruthTable.Columns)
+                {
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
+
+                dgvSimplifiedTruthTable.Columns[dgvTruthTable.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                throw;
+            }
         }
 
 
         #region Helper methods
-        
+
         private void FindHexValue()
         {
             List<int> truthValues = myTree.TruthTable.ComputeTruthTable();
@@ -125,7 +177,7 @@ namespace AsciiFormulaAnalyzer
                     column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 }
 
-                dgvTruthTable.Columns[dgvTruthTable.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;             
+                dgvTruthTable.Columns[dgvTruthTable.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             catch (Exception ex)
             {

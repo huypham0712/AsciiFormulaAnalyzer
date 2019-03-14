@@ -38,8 +38,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbHexValue = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dgvSimplifiedTruthTable = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.pbTreeGraph)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTruthTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSimplifiedTruthTable)).BeginInit();
             this.SuspendLayout();
             // 
             // tbInput
@@ -115,7 +118,7 @@
             this.dgvTruthTable.ReadOnly = true;
             this.dgvTruthTable.RowHeadersVisible = false;
             this.dgvTruthTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            this.dgvTruthTable.Size = new System.Drawing.Size(293, 158);
+            this.dgvTruthTable.Size = new System.Drawing.Size(293, 176);
             this.dgvTruthTable.TabIndex = 6;
             // 
             // label2
@@ -148,11 +151,42 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "Hexadecimal value";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(12, 456);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(170, 21);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Simplified Truth Table";
+            // 
+            // dgvSimplifiedTruthTable
+            // 
+            this.dgvSimplifiedTruthTable.AllowUserToAddRows = false;
+            this.dgvSimplifiedTruthTable.AllowUserToDeleteRows = false;
+            this.dgvSimplifiedTruthTable.AllowUserToResizeColumns = false;
+            this.dgvSimplifiedTruthTable.AllowUserToResizeRows = false;
+            this.dgvSimplifiedTruthTable.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dgvSimplifiedTruthTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgvSimplifiedTruthTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgvSimplifiedTruthTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSimplifiedTruthTable.Location = new System.Drawing.Point(12, 480);
+            this.dgvSimplifiedTruthTable.MultiSelect = false;
+            this.dgvSimplifiedTruthTable.Name = "dgvSimplifiedTruthTable";
+            this.dgvSimplifiedTruthTable.ReadOnly = true;
+            this.dgvSimplifiedTruthTable.RowHeadersVisible = false;
+            this.dgvSimplifiedTruthTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dgvSimplifiedTruthTable.Size = new System.Drawing.Size(293, 158);
+            this.dgvSimplifiedTruthTable.TabIndex = 10;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 685);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.dgvSimplifiedTruthTable);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tbHexValue);
             this.Controls.Add(this.label2);
@@ -167,6 +201,7 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pbTreeGraph)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTruthTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSimplifiedTruthTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -184,6 +219,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbHexValue;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataGridView dgvSimplifiedTruthTable;
     }
 }
 

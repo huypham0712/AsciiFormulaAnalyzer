@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AsciiFormulaAnalyzer
 {
@@ -60,7 +61,7 @@ namespace AsciiFormulaAnalyzer
             return -1;
         }
 
-        public static List<string[]> GetPreSimplifyValues(List<int[]> tableValue, List<int> truthTableResult, List<Variable> variables)
+        public static List<List<string[]>> GetPreSimplifyValues(List<int[]> tableValue, List<int> truthTableResult, List<Variable> variables)
         {
             List<int> indices = GetIndicesOfTrue(truthTableResult);
             List<string[]> result = new List<string[]>();
@@ -83,6 +84,49 @@ namespace AsciiFormulaAnalyzer
                 result.Add(data);
             }
 
+            List<List<string[]>> sameNrOfOnes = new List<List<string[]>>();
+            for (int i = 0; i < variables.Count + 1; i++)
+            {
+                List<string[]> termGrouped = new List<string[]>();
+                foreach (string[] preSimplifyValue in result)
+                {
+                    if (preSimplifyValue.Count(x => x.Equals("1")) == i)
+                    {
+                        termGrouped.Add(preSimplifyValue);
+                    }
+                }
+
+                if (termGrouped.Any())
+                {
+                    sameNrOfOnes.Add(termGrouped);
+                }
+            }
+
+            return sameNrOfOnes;
+        }
+
+        public static List<string[]> GetFalseRows(List<int[]> tableValue, List<int> truthTableResult, List<Variable> variables)
+        {
+            List<int> indices = GetIndicesOfFalse(truthTableResult);
+            List<string[]> result = new List<string[]>();
+
+            foreach (int index in indices)
+            {
+                string[] data = new string[variables.Count];
+                int counter = 0;
+                for (int i = 0; i < tableValue.Count; i++)
+                {
+                    for (int j = 0; j < tableValue[i].Length; j++)
+                    {
+                        if (j == index)
+                        {
+                            data[counter] = tableValue[i][j].ToString();
+                            counter++;
+                        }
+                    }
+                }
+                result.Add(data);
+            }
             return result;
         }
 
@@ -92,6 +136,20 @@ namespace AsciiFormulaAnalyzer
             for (int i = 0; i < truthTableResult.Count; i++)
             {
                 if (truthTableResult[i] == 1)
+                {
+                    result.Add(i);
+                }
+            }
+
+            return result;
+        }
+
+        private static List<int> GetIndicesOfFalse(List<int> truthTableResult)
+        {
+            List<int> result = new List<int>();
+            for (int i = 0; i < truthTableResult.Count; i++)
+            {
+                if (truthTableResult[i] == 0)
                 {
                     result.Add(i);
                 }

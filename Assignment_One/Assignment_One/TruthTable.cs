@@ -39,78 +39,81 @@ namespace AsciiFormulaAnalyzer
             return finalResult;
         }
 
-
-
-        private List<List<string[]>> FindRowsWithSameNrOfOnes(List<string[]> preSimplifyValues)
+        public List<List<string[]>> Simplify(List<List<string[]>> data)
         {
-            // Find all rows that have the same number of ones.
-            List<List<string[]>> sameNrOfOnes = new List<List<string[]>>();
-            for (int i = 0; i < Variables.Count + 1; i++)
+            List<List<string[]>> result = new List<List<string[]>>();
+            bool canBeSimplified = false;
+
+            //For each pair
+            for (int i = 0; i < data.Count - 1; i++)
             {
-                List<string[]> termGrouped = new List<string[]>();
-                foreach (string[] preSimplifyValue in preSimplifyValues)
+                List<string[]> simplifiedData = new List<string[]>();
+                foreach (string[] previousGroup in data[i])
                 {
-                    if (preSimplifyValue.Count(x => x.Equals("1")) == i)
+                    foreach (string[] groupBehind in data[i + 1])
                     {
-                        termGrouped.Add(preSimplifyValue);
+                        int tmp = GetIndexDiff(previousGroup, groupBehind);
+                        if (tmp != -1)
+                        {
+                            string[] simplifiedRow = (string[])previousGroup.Clone();
+                            simplifiedRow[tmp] = "*";
+                            canBeSimplified = true;
+                            if (!CheckDuplicatedSimplifiedRow(simplifiedData, simplifiedRow))
+                            {
+                                simplifiedData.Add(simplifiedRow);
+                            }                        
+                        }
                     }
                 }
 
-                if (termGrouped.Any())
+                if (simplifiedData.Any())
                 {
-                    sameNrOfOnes.Add(termGrouped);
+                    result.Add(simplifiedData);
                 }
             }
 
-            return sameNrOfOnes;
+            if (!canBeSimplified || !data.Any())
+            {
+                return data;
+            }
+
+            return Simplify(result);
         }
 
-        public List<string[]> Simplify(List<string[]> preSimplifyValues, int count = 0)
+        private bool CheckDuplicatedSimplifiedRow(List<string[]> simplifiedData, string[] simplifiedRow)
         {
-            count++;
-            List<string[]> result = new List<string[]>();
-
-            for (int i = 0; i < preSimplifyValues.Count; i++)
+            foreach (var array in simplifiedData)
             {
-                bool canBeSimplified = false;
-                for (int j = 0; j < preSimplifyValues.Count; j++)
+                if (array.SequenceEqual(simplifiedRow))
                 {
-                    List<int> diffIndexes = new List<int>();
-                    for (int k = 0; k < preSimplifyValues[i].Length; k++)
-                    {
-                        if (preSimplifyValues[i][k] != preSimplifyValues[j][k])
-                        {
-                            diffIndexes.Add(k);
-                        }
-                    }
-
-                    if (diffIndexes.Count == 1)
-                    {
-                        var smpfdRow = (string[])preSimplifyValues[i].Clone();
-
-                        smpfdRow[diffIndexes[0]] = "*";
-
-                        if (!result.Any(smpfdRow.SequenceEqual))
-                        {
-                            result.Add(smpfdRow);
-                        }
-
-                        canBeSimplified = true;
-                    }
+                    return true;
                 }
+            }
+            return false;
+        }
 
-                if (!result.Any(preSimplifyValues[i].SequenceEqual) && !canBeSimplified)
+        private int GetIndexDiff(string[] s1, string[] s2)
+        {
+            if (!s1.Any() || !s2.Any())
+            {
+                return -1;
+            }
+
+            List<int> diffIndex = new List<int>();
+            for (int i = 0; i < s1.Length; i++)
+            {
+                if (!s1[i].Equals(s2[i]))
                 {
-                    result.Add(preSimplifyValues[i]);
+                    diffIndex.Add(i);
                 }
             }
 
-            if (count < Variables.Count)
+            if (diffIndex.Count == 1)
             {
-                return Simplify(result, count);
+                return diffIndex[0];
             }
 
-            return result;
+            return -1;
         }
 
         private int GetNrOfColumn()
