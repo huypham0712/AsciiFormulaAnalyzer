@@ -59,5 +59,45 @@ namespace AsciiFormulaAnalyzer
 
             return -1;
         }
+
+        public static List<string[]> GetPreSimplifyValues(List<int[]> tableValue, List<int> truthTableResult, List<Variable> variables)
+        {
+            List<int> indices = GetIndicesOfTrue(truthTableResult);
+            List<string[]> result = new List<string[]>();
+
+            foreach (int index in indices)
+            {
+                string[] data = new string[variables.Count];
+                int counter = 0;
+                for (int i = 0; i < tableValue.Count; i++)
+                {
+                    for (int j = 0; j < tableValue[i].Length; j++)
+                    {
+                        if (j == index)
+                        {
+                            data[counter] = tableValue[i][j].ToString();
+                            counter++;
+                        }
+                    }
+                }
+                result.Add(data);
+            }
+
+            return result;
+        }
+
+        private static List<int> GetIndicesOfTrue(List<int> truthTableResult)
+        {
+            List<int> result = new List<int>();
+            for (int i = 0; i < truthTableResult.Count; i++)
+            {
+                if (truthTableResult[i] == 1)
+                {
+                    result.Add(i);
+                }
+            }
+
+            return result;
+        }
     }
 }

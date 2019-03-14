@@ -14,6 +14,7 @@ namespace AsciiFormulaAnalyzer
         public MainForm()
         {
             InitializeComponent();
+            tbInput.MaxLength = Int32.MaxValue;
             Text = "Ascii Formula Analyzer";
             FormBorderStyle = FormBorderStyle.FixedSingle;
             myTree = new AsciiTree();
@@ -51,6 +52,19 @@ namespace AsciiFormulaAnalyzer
 
             //Compute the hexadecimal value from the truth table
             FindHexValue();
+
+            SimplifyTruthTable();
+        }
+
+        private void SimplifyTruthTable()
+        {
+            TruthTable myTruthTable = myTree.TruthTable;
+            List<int[]> truthTableValues = TruthTableHelper.GetPreComputeValues(myTree.Variables);
+            List<int> truthTableResult = myTruthTable.ComputeTruthTable();
+            List<string[]> preSimplifiedValue = TruthTableHelper.GetPreSimplifyValues(truthTableValues, truthTableResult, myTree.Variables);
+
+            //List<string[]> simplifiedResult = myTruthTable.Simplify(preSimplifiedValue);
+            myTruthTable.SimplifyAnotherVersion(preSimplifiedValue);
         }
 
 
