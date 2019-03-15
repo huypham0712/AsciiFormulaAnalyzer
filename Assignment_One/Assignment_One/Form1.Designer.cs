@@ -48,9 +48,10 @@
             // tbInput
             // 
             this.tbInput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbInput.Location = new System.Drawing.Point(12, 33);
+            this.tbInput.Location = new System.Drawing.Point(16, 33);
+            this.tbInput.Multiline = true;
             this.tbInput.Name = "tbInput";
-            this.tbInput.Size = new System.Drawing.Size(208, 29);
+            this.tbInput.Size = new System.Drawing.Size(204, 130);
             this.tbInput.TabIndex = 0;
             // 
             // lbInput
@@ -87,16 +88,16 @@
             this.lbVariables.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbVariables.FormattingEnabled = true;
             this.lbVariables.ItemHeight = 21;
-            this.lbVariables.Location = new System.Drawing.Point(12, 89);
+            this.lbVariables.Location = new System.Drawing.Point(16, 194);
             this.lbVariables.Name = "lbVariables";
-            this.lbVariables.Size = new System.Drawing.Size(89, 88);
+            this.lbVariables.Size = new System.Drawing.Size(57, 340);
             this.lbVariables.TabIndex = 4;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(8, 65);
+            this.label1.Location = new System.Drawing.Point(13, 166);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(82, 21);
             this.label1.TabIndex = 5;
@@ -112,7 +113,7 @@
             this.dgvTruthTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvTruthTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvTruthTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTruthTable.Location = new System.Drawing.Point(12, 207);
+            this.dgvTruthTable.Location = new System.Drawing.Point(16, 598);
             this.dgvTruthTable.MultiSelect = false;
             this.dgvTruthTable.Name = "dgvTruthTable";
             this.dgvTruthTable.ReadOnly = true;
@@ -125,7 +126,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 183);
+            this.label2.Location = new System.Drawing.Point(16, 574);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 21);
             this.label2.TabIndex = 7;
@@ -135,7 +136,7 @@
             // 
             this.tbHexValue.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbHexValue.ForeColor = System.Drawing.Color.SteelBlue;
-            this.tbHexValue.Location = new System.Drawing.Point(256, 62);
+            this.tbHexValue.Location = new System.Drawing.Point(261, 163);
             this.tbHexValue.Name = "tbHexValue";
             this.tbHexValue.ReadOnly = true;
             this.tbHexValue.Size = new System.Drawing.Size(48, 29);
@@ -145,7 +146,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(103, 65);
+            this.label3.Location = new System.Drawing.Point(108, 166);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(147, 21);
             this.label3.TabIndex = 9;
@@ -155,7 +156,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(12, 456);
+            this.label4.Location = new System.Drawing.Point(349, 574);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(170, 21);
             this.label4.TabIndex = 11;
@@ -171,7 +172,7 @@
             this.dgvSimplifiedTruthTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvSimplifiedTruthTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvSimplifiedTruthTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSimplifiedTruthTable.Location = new System.Drawing.Point(12, 480);
+            this.dgvSimplifiedTruthTable.Location = new System.Drawing.Point(349, 598);
             this.dgvSimplifiedTruthTable.MultiSelect = false;
             this.dgvSimplifiedTruthTable.Name = "dgvSimplifiedTruthTable";
             this.dgvSimplifiedTruthTable.ReadOnly = true;
@@ -184,7 +185,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 685);
+            this.ClientSize = new System.Drawing.Size(836, 825);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.dgvSimplifiedTruthTable);
             this.Controls.Add(this.label3);

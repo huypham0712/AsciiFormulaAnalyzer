@@ -39,7 +39,30 @@ namespace AsciiFormulaAnalyzer
             return finalResult;
         }
 
-        public List<List<string[]>> Simplify(List<List<string[]>> data)
+        public List<List<string[]>> ComputeSimplifiedTruthTable()
+        {
+            var tableValues = TruthTableHelper.GetPreComputeValues(Variables);
+            var truthTableResult = ComputeTruthTable();
+            var data = TruthTableHelper.GetPreSimplifyValues(tableValues, truthTableResult, Variables);
+            var result = Simplify(data);
+
+            return CheckSimplifiedResult(result);
+        }
+
+        private List<List<string[]>> CheckSimplifiedResult(List<List<string[]>> result)
+        {
+            foreach (var dataList in result)
+            {
+                foreach (string[] row in dataList)
+                {
+                    if (row.Contains("*")) return result;
+                }
+            }
+
+            return null;
+        }
+
+        private List<List<string[]>> Simplify(List<List<string[]>> data)
         {
             List<List<string[]>> result = new List<List<string[]>>();
             bool canBeSimplified = false;
