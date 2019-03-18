@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using AsciiFormulaAnalyzer.Notations;
 
 namespace AsciiFormulaAnalyzer
@@ -123,6 +125,95 @@ namespace AsciiFormulaAnalyzer
             }
 
             return null;
+        }
+
+        public string FindDisjunctiveNormalForm()
+        {
+            var tableValues = TruthTableHelper.GetPreComputeValues(Variables);
+            string result = "";
+
+            for (int i = 0; i < TruthTable.NumberOfRow; i++)
+            {
+                string rowData = "(";
+                for (int j = 0; j < TruthTable.NumberOfColumn; j++)
+                {
+                    rowData += GetDisjunctiveFormat(tableValues[j][i], Variables[j]);
+                    if(j != TruthTable.NumberOfColumn - 1) rowData += " \u2227 ";
+                }
+
+                rowData += ") ";
+                if (i != TruthTable.NumberOfRow - 1) rowData += "\u2228 ";
+                result += rowData;
+            }
+
+            return result;
+        }
+
+        private string GetDisjunctiveFormat(int truthValue, Variable variable)
+        {
+            switch (truthValue)
+            {
+                case 1:
+                    return variable.Proposition.ToString();
+
+                case 0:
+                    return "\u00ac" + variable.Proposition.ToString();
+
+                default:
+                    return String.Empty;
+            }
+        }
+
+        private string GetDisjunctiveFormat(string simplifiedValue, Variable variable)
+        {
+            if (int.TryParse(simplifiedValue, out var value))
+            {
+                return GetDisjunctiveFormat(value, variable);
+            }
+
+            string simplifiedDisjunctiveFormat = "(";
+                simplifiedDisjunctiveFormat +=
+                    $"{variable.Proposition.ToString()} \u2228 \u00ac {variable.Proposition.ToString()})";
+
+            return simplifiedDisjunctiveFormat;
+        }
+
+        public string FindDisjunctiveSimplifiedForm()
+        {
+            var tableValue = TruthTableHelper.GetPreComputeValues(Variables);
+            var truthTableResult = ComputeTruthData();
+            var falseRows = TruthTableHelper.GetFalseRows(tableValue, truthTableResult, Variables);
+            var simplifiedRows = TruthTable.ComputeSimplifiedTruthTable();
+
+            if (simplifiedRows == null)
+            {
+                return FindDisjunctiveNormalForm();
+            }
+
+            List<string[]> combinedData = falseRows;
+
+            foreach (List<string[]> simplifiedRow in simplifiedRows)
+            {
+                combinedData.AddRange(simplifiedRow);
+            }
+
+            string result = "";
+
+            for (int i = 0; i < combinedData.Count; i++)
+            {
+                string rowData = "(";
+                for (int j = 0; j < combinedData[i].Length; j++)
+                {
+                    rowData += GetDisjunctiveFormat(combinedData[i][j], Variables[j]);
+                    if (j != combinedData[i].Length - 1) rowData += " \u2227 ";
+                }
+
+                rowData += ")";
+                if (i != combinedData.Count - 1) rowData += "\u2228 ";
+                result += rowData;
+            }
+
+            return result;
         }
     }
 }

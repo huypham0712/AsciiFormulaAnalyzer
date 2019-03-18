@@ -53,7 +53,30 @@ namespace AsciiFormulaAnalyzer
             //Compute the hexadecimal value from the truth table
             FindHexValue();
 
+            //Simplify the truth table
             SimplifyTruthTable();
+
+            //Show the disjunctive normal form
+            ShowDisjunctiveNormalForm();
+
+            //Show the disjunctive from the simplified truth table
+            ShowDisjunctiveSimplifiedForm();
+        }
+
+        private void ShowDisjunctiveSimplifiedForm()
+        {
+            string result = myTree.FindDisjunctiveSimplifiedForm();
+            tbDisjunctiveSimplified.Text = result;
+        }
+
+
+        #region Helper methods
+
+        private void ShowDisjunctiveNormalForm()
+        {
+            //perform the finding disjunctive normal form here
+            string disjunctiveNormalForm = myTree.FindDisjunctiveNormalForm();
+            tbDisjunctive.Text = disjunctiveNormalForm;
         }
 
         private void SimplifyTruthTable()
@@ -81,7 +104,7 @@ namespace AsciiFormulaAnalyzer
                 if (result != null)
                 {
                     dgvSimplifiedTruthTable.ColumnCount = myTruthTable.NumberOfColumn + 1;
-                    dgvSimplifiedTruthTable.RowCount = falseRows.Count + result[0].Count;
+                    dgvSimplifiedTruthTable.RowCount = falseRows.Count + GetNrOfSimplifiedRows(result);
 
                     for (int i = 0; i < myTruthTable.NumberOfColumn; i++)
                     {
@@ -100,23 +123,27 @@ namespace AsciiFormulaAnalyzer
                         dgvSimplifiedTruthTable.Rows.Add(rows);
                     }
 
-                    for (int i = 0; i < result[0].Count; i++)
+                    foreach (var listOfSimplifiedRows in result)
                     {
-                        string[] rows = new string[result[0][i].Length + 1];
-                        result[0][i].CopyTo(rows, 0);
-                        rows[result[0][i].Length] = "1";
-                        dgvSimplifiedTruthTable.Rows.Add(rows);
+                        for (int i = 0; i < listOfSimplifiedRows.Count; i++)
+                        {
+                            string[] rows = new string[listOfSimplifiedRows[i].Length + 1];
+                            listOfSimplifiedRows[i].CopyTo(rows, 0);
+                            rows[listOfSimplifiedRows[i].Length] = "1";
+                            dgvSimplifiedTruthTable.Rows.Add(rows);
+                        }
                     }
-
                     
                 }
-
-                dgvSimplifiedTruthTable.ColumnCount = 1;
-                dgvSimplifiedTruthTable.RowCount = 1;
-                dgvSimplifiedTruthTable.Rows.Clear();
-                string[] errorMessage = { "Could not simplify the truth table of this formula!!" };
-                dgvSimplifiedTruthTable.Rows.Add(errorMessage);
-
+                else
+                {
+                    dgvSimplifiedTruthTable.ColumnCount = 1;
+                    dgvSimplifiedTruthTable.RowCount = 1;
+                    dgvSimplifiedTruthTable.Rows.Clear();
+                    string[] errorMessage = { "Could not simplify the truth table of this formula!!" };
+                    dgvSimplifiedTruthTable.Rows.Add(errorMessage);
+                }
+             
                 foreach (DataGridViewColumn column in dgvSimplifiedTruthTable.Columns)
                 {
                     column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -130,8 +157,16 @@ namespace AsciiFormulaAnalyzer
             }
         }
 
+        private int GetNrOfSimplifiedRows(List<List<string[]>> simplifiedData)
+        {
+            int result = 0;
+            foreach (var listOfData in simplifiedData)
+            {
+                result += listOfData.Count;
+            }
 
-        #region Helper methods
+            return result;
+        }
 
         private void FindHexValue()
         {
@@ -202,7 +237,14 @@ namespace AsciiFormulaAnalyzer
             myTree = new AsciiTree();
 
             tbInput.Clear();
-            lbVariables.Items.Clear();
+            tbVariables.Clear();
+            tbDisjunctive.Clear();
+            tbDisjunctiveSimplified.Clear();
+            tbHexValue.Clear();
+            dgvTruthTable.Rows.Clear();
+            dgvTruthTable.Columns.Clear();
+            dgvSimplifiedTruthTable.Rows.Clear();
+            dgvSimplifiedTruthTable.Columns.Clear();
             pbTreeGraph.ImageLocation = @"Resources/Images/empty.png";
         }
 
@@ -244,11 +286,15 @@ namespace AsciiFormulaAnalyzer
 
             try
             {
-                lbVariables.Items.Clear();
-                foreach (Variable variable in myTree.MainFormula.Variables)
+                tbVariables.Clear();
+                string variablesList = "";
+                for (int i = 0; i < myTree.Variables.Count; i++)
                 {
-                    lbVariables.Items.Add(variable.ToString());
+                    variablesList += myTree.Variables[i].Proposition.ToString();
+                    if (i != myTree.Variables.Count - 1) variablesList += ", ";
                 }
+
+                tbVariables.Text = variablesList;
             }
             catch (Exception e)
             {

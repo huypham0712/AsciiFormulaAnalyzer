@@ -32,7 +32,6 @@
             this.lbInput = new System.Windows.Forms.Label();
             this.btnProcess = new System.Windows.Forms.Button();
             this.pbTreeGraph = new System.Windows.Forms.PictureBox();
-            this.lbVariables = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgvTruthTable = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
@@ -40,6 +39,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvSimplifiedTruthTable = new System.Windows.Forms.DataGridView();
+            this.tbDisjunctive = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbDisjunctiveSimplified = new System.Windows.Forms.TextBox();
+            this.tbVariables = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbTreeGraph)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTruthTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimplifiedTruthTable)).BeginInit();
@@ -48,10 +52,10 @@
             // tbInput
             // 
             this.tbInput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbInput.Location = new System.Drawing.Point(16, 33);
+            this.tbInput.Location = new System.Drawing.Point(20, 34);
             this.tbInput.Multiline = true;
             this.tbInput.Name = "tbInput";
-            this.tbInput.Size = new System.Drawing.Size(204, 130);
+            this.tbInput.Size = new System.Drawing.Size(1292, 29);
             this.tbInput.TabIndex = 0;
             // 
             // lbInput
@@ -67,9 +71,9 @@
             // btnProcess
             // 
             this.btnProcess.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProcess.Location = new System.Drawing.Point(226, 33);
+            this.btnProcess.Location = new System.Drawing.Point(1318, 34);
             this.btnProcess.Name = "btnProcess";
-            this.btnProcess.Size = new System.Drawing.Size(79, 29);
+            this.btnProcess.Size = new System.Drawing.Size(117, 30);
             this.btnProcess.TabIndex = 2;
             this.btnProcess.Text = "Process";
             this.btnProcess.UseVisualStyleBackColor = true;
@@ -77,27 +81,17 @@
             // 
             // pbTreeGraph
             // 
-            this.pbTreeGraph.Location = new System.Drawing.Point(349, 12);
+            this.pbTreeGraph.Location = new System.Drawing.Point(996, 293);
             this.pbTreeGraph.Name = "pbTreeGraph";
             this.pbTreeGraph.Size = new System.Drawing.Size(439, 426);
             this.pbTreeGraph.TabIndex = 3;
             this.pbTreeGraph.TabStop = false;
             // 
-            // lbVariables
-            // 
-            this.lbVariables.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbVariables.FormattingEnabled = true;
-            this.lbVariables.ItemHeight = 21;
-            this.lbVariables.Location = new System.Drawing.Point(16, 194);
-            this.lbVariables.Name = "lbVariables";
-            this.lbVariables.Size = new System.Drawing.Size(57, 340);
-            this.lbVariables.TabIndex = 4;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(13, 166);
+            this.label1.Location = new System.Drawing.Point(16, 234);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(82, 21);
             this.label1.TabIndex = 5;
@@ -113,7 +107,7 @@
             this.dgvTruthTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvTruthTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvTruthTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTruthTable.Location = new System.Drawing.Point(16, 598);
+            this.dgvTruthTable.Location = new System.Drawing.Point(20, 319);
             this.dgvTruthTable.MultiSelect = false;
             this.dgvTruthTable.Name = "dgvTruthTable";
             this.dgvTruthTable.ReadOnly = true;
@@ -126,7 +120,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(16, 574);
+            this.label2.Location = new System.Drawing.Point(20, 295);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 21);
             this.label2.TabIndex = 7;
@@ -136,17 +130,17 @@
             // 
             this.tbHexValue.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbHexValue.ForeColor = System.Drawing.Color.SteelBlue;
-            this.tbHexValue.Location = new System.Drawing.Point(261, 163);
+            this.tbHexValue.Location = new System.Drawing.Point(20, 202);
             this.tbHexValue.Name = "tbHexValue";
             this.tbHexValue.ReadOnly = true;
-            this.tbHexValue.Size = new System.Drawing.Size(48, 29);
+            this.tbHexValue.Size = new System.Drawing.Size(1415, 29);
             this.tbHexValue.TabIndex = 8;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(108, 166);
+            this.label3.Location = new System.Drawing.Point(16, 178);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(147, 21);
             this.label3.TabIndex = 9;
@@ -156,7 +150,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(349, 574);
+            this.label4.Location = new System.Drawing.Point(353, 295);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(170, 21);
             this.label4.TabIndex = 11;
@@ -172,7 +166,7 @@
             this.dgvSimplifiedTruthTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvSimplifiedTruthTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvSimplifiedTruthTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSimplifiedTruthTable.Location = new System.Drawing.Point(349, 598);
+            this.dgvSimplifiedTruthTable.Location = new System.Drawing.Point(353, 319);
             this.dgvSimplifiedTruthTable.MultiSelect = false;
             this.dgvSimplifiedTruthTable.Name = "dgvSimplifiedTruthTable";
             this.dgvSimplifiedTruthTable.ReadOnly = true;
@@ -181,11 +175,66 @@
             this.dgvSimplifiedTruthTable.Size = new System.Drawing.Size(293, 158);
             this.dgvSimplifiedTruthTable.TabIndex = 10;
             // 
+            // tbDisjunctive
+            // 
+            this.tbDisjunctive.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbDisjunctive.Location = new System.Drawing.Point(20, 90);
+            this.tbDisjunctive.Multiline = true;
+            this.tbDisjunctive.Name = "tbDisjunctive";
+            this.tbDisjunctive.ReadOnly = true;
+            this.tbDisjunctive.Size = new System.Drawing.Size(1415, 29);
+            this.tbDisjunctive.TabIndex = 12;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(16, 66);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(188, 21);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Disjunctive normal form:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(16, 122);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(208, 21);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Disjunctive simplified form:";
+            // 
+            // tbDisjunctiveSimplified
+            // 
+            this.tbDisjunctiveSimplified.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbDisjunctiveSimplified.Location = new System.Drawing.Point(20, 146);
+            this.tbDisjunctiveSimplified.Multiline = true;
+            this.tbDisjunctiveSimplified.Name = "tbDisjunctiveSimplified";
+            this.tbDisjunctiveSimplified.ReadOnly = true;
+            this.tbDisjunctiveSimplified.Size = new System.Drawing.Size(1415, 29);
+            this.tbDisjunctiveSimplified.TabIndex = 14;
+            // 
+            // tbVariables
+            // 
+            this.tbVariables.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbVariables.ForeColor = System.Drawing.Color.SteelBlue;
+            this.tbVariables.Location = new System.Drawing.Point(20, 258);
+            this.tbVariables.Name = "tbVariables";
+            this.tbVariables.ReadOnly = true;
+            this.tbVariables.Size = new System.Drawing.Size(1415, 29);
+            this.tbVariables.TabIndex = 16;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(836, 825);
+            this.ClientSize = new System.Drawing.Size(1447, 727);
+            this.Controls.Add(this.tbVariables);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.tbDisjunctiveSimplified);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.tbDisjunctive);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.dgvSimplifiedTruthTable);
             this.Controls.Add(this.label3);
@@ -193,7 +242,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dgvTruthTable);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lbVariables);
             this.Controls.Add(this.pbTreeGraph);
             this.Controls.Add(this.btnProcess);
             this.Controls.Add(this.lbInput);
@@ -214,7 +262,6 @@
         private System.Windows.Forms.Label lbInput;
         private System.Windows.Forms.Button btnProcess;
         private System.Windows.Forms.PictureBox pbTreeGraph;
-        private System.Windows.Forms.ListBox lbVariables;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgvTruthTable;
         private System.Windows.Forms.Label label2;
@@ -222,6 +269,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView dgvSimplifiedTruthTable;
+        private System.Windows.Forms.TextBox tbDisjunctive;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox tbDisjunctiveSimplified;
+        private System.Windows.Forms.TextBox tbVariables;
     }
 }
 

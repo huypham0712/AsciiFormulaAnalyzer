@@ -30,7 +30,7 @@ namespace AsciiFormulaAnalyzer.Notations
             int pre = index;
 
             if (preIndex != 0) {
-                result += String.Format(Environment.NewLine + "node{0} -- node{1}", preIndex, index);
+                result += Environment.NewLine + $"node{preIndex} -- node{index}";
             }
 
             index++;
