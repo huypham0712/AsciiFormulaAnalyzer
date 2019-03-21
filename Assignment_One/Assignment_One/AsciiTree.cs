@@ -9,7 +9,7 @@ namespace AsciiFormulaAnalyzer
 {
     public class AsciiTree
     {
-        private readonly char[] toBeIgnoredChars = {' ', ',', '(', ')'};
+        private readonly char[] toBeIgnoredChars = { ' ', ',', '(', ')' };
         public List<Variable> Variables { get; set; }
         public AsciiFormula MainFormula { get; private set; }
         public TruthTable TruthTable { get; set; }
@@ -127,28 +127,123 @@ namespace AsciiFormulaAnalyzer
             return null;
         }
 
-        public string FindDisjunctiveNormalForm()
+        public string FindDisjunctiveNormalFormAsciiNotation()
         {
             var tableValues = TruthTableHelper.GetPreComputeValues(Variables);
+            var truthResult = ComputeTruthData();
             string result = "";
 
+            List<string> outerPair = new List<string>();
             for (int i = 0; i < TruthTable.NumberOfRow; i++)
             {
-                string rowData = "(";
-                for (int j = 0; j < TruthTable.NumberOfColumn; j++)
+                string outerPairTmp = "";
+                if (truthResult[i] != 0)
                 {
-                    rowData += GetDisjunctiveFormat(tableValues[j][i], Variables[j]);
-                    if(j != TruthTable.NumberOfColumn - 1) rowData += " \u2227 ";
-                }
+                    string rowData = "";
+                    List<string> innerPair = new List<string>();
+                    for (int j = 0; j < TruthTable.NumberOfColumn; j++)
+                    {
+                        //rowData += GetDisjunctiveFormat(tableValues[j][i], Variables[j]);
+                        string variable = GetDisjunctiveFormat(tableValues[j][i], Variables[j]);
+                        string tmp = "";
+                        if (innerPair.Count < 2)
+                        {
+                            innerPair.Add(variable);
+                        }
 
-                rowData += ") ";
-                if (i != TruthTable.NumberOfRow - 1) rowData += "\u2228 ";
-                result += rowData;
+                        if (innerPair.Count == 2)
+                        {
+                            //if (innerPair[1].Contains("&"))
+                            //{
+                            //    innerPair[1].Remove(0, 1);
+                            //}
+                            tmp = $"&({innerPair[0]},{innerPair[1]})"/* + (j == TruthTable.NumberOfColumn - 1 ? "" : ",")*/;
+                            innerPair.Clear();
+                            innerPair.Add(tmp);
+                        }
+
+                        if (innerPair.Count == 1 && j == TruthTable.NumberOfColumn - 1)
+                        {
+                            tmp = $"{innerPair[0]}";
+                            innerPair.Clear();
+                        }
+
+                        rowData = tmp;
+                    }
+
+                    if (outerPair.Count < 2) outerPair.Add(rowData);
+
+                    if (outerPair.Count == 2)
+                    {
+                        //if (outerPair[0][0].Equals(outerPair[1][0]))
+                        //{
+                        //    outerPairTmp = $"&({outerPair[0]},{outerPair[1]})" +
+                        //                   (i == TruthTable.NumberOfRow - 1 ? "" : ",");
+                        //    outerPair.Clear();
+                        //}
+                        //outerPairTmp = $"&({outerPair[0]},{outerPair[1]})" +
+                        //               (i == TruthTable.NumberOfRow - 1 ? "" : ",");
+                        outerPairTmp = $"|({outerPair[0]},{outerPair[1]})";
+                        outerPair.Clear();
+                        outerPair.Add(outerPairTmp);
+                    }
+
+                    if (outerPair.Count == 1 && i == TruthTable.NumberOfRow - 1)
+                    {
+                        outerPairTmp = $"{outerPair[0]}";
+                        outerPair.Clear();
+                    }
+
+                    rowData = outerPairTmp;
+
+                    if (i != TruthTable.NumberOfRow - 1)
+                    {
+                        result += rowData;
+                    }
+                    else
+                    {
+                        result = rowData;
+                    }
+                }
             }
 
             return result;
         }
 
+        public string FindDisjunctiveNormalForm()
+        {
+            var tableValues = TruthTableHelper.GetPreComputeValues(Variables);
+            var truthResult = ComputeTruthData();
+            string result = "";
+
+            for (int i = 0; i < TruthTable.NumberOfRow; i++)
+            {
+                if (truthResult[i] != 0)
+                {
+                    string rowData = "(";
+                    for (int j = 0; j < TruthTable.NumberOfColumn; j++)
+                    {
+                        rowData += GetDisjunctiveFormat(tableValues[j][i], Variables[j]);
+                        if (j != TruthTable.NumberOfColumn - 1) rowData += " \u2227 ";
+                    }
+
+                    rowData += ") ";
+                    if (i != TruthTable.NumberOfRow - 1) rowData += "\u2228 ";
+                    result += rowData;
+                }
+            }
+
+            return result;
+        }
+
+
+
+        /// <summary>
+        /// Return the value in Logic notation format of the variable from the truth table
+        /// </summary>
+        /// <param name="truthValue"> The truth value which can be either 1 or 0</param>
+        /// <param name="variable"> The variable coordinates with the truth value</param>
+        /// <returns> The value in Logic notation format</returns>
         private string GetDisjunctiveFormat(int truthValue, Variable variable)
         {
             switch (truthValue)
@@ -157,13 +252,20 @@ namespace AsciiFormulaAnalyzer
                     return variable.Proposition.ToString();
 
                 case 0:
-                    return "\u00ac" + variable.Proposition.ToString();
+                    //return "\u00ac" + variable.Proposition.ToString();
+                    return $"~({variable.Proposition.ToString()})";
 
                 default:
                     return String.Empty;
             }
         }
 
+        /// <summary>
+        /// Return the value in Logic notation format of the variable from the simplified truth table.
+        /// </summary>
+        /// <param name="simplifiedValue"> The simplified value which can be either 1, 0 or *</param>
+        /// <param name="variable"> The variable coordinates with the simplified value</param>
+        /// <returns> The value in Logic notation format</returns>
         private string GetDisjunctiveFormat(string simplifiedValue, Variable variable)
         {
             if (int.TryParse(simplifiedValue, out var value))
@@ -172,8 +274,8 @@ namespace AsciiFormulaAnalyzer
             }
 
             string simplifiedDisjunctiveFormat = "(";
-                simplifiedDisjunctiveFormat +=
-                    $"{variable.Proposition.ToString()} \u2228 \u00ac {variable.Proposition.ToString()})";
+            simplifiedDisjunctiveFormat +=
+                $"{variable.Proposition.ToString()} \u2228 \u00ac {variable.Proposition.ToString()})";
 
             return simplifiedDisjunctiveFormat;
         }
@@ -190,26 +292,26 @@ namespace AsciiFormulaAnalyzer
                 return FindDisjunctiveNormalForm();
             }
 
-            List<string[]> combinedData = falseRows;
+            List<string[]> data = new List<string[]>();
 
             foreach (List<string[]> simplifiedRow in simplifiedRows)
             {
-                combinedData.AddRange(simplifiedRow);
+                data.AddRange(simplifiedRow);
             }
 
             string result = "";
 
-            for (int i = 0; i < combinedData.Count; i++)
+            for (int i = 0; i < data.Count; i++)
             {
                 string rowData = "(";
-                for (int j = 0; j < combinedData[i].Length; j++)
+                for (int j = 0; j < data[i].Length; j++)
                 {
-                    rowData += GetDisjunctiveFormat(combinedData[i][j], Variables[j]);
-                    if (j != combinedData[i].Length - 1) rowData += " \u2227 ";
+                    rowData += GetDisjunctiveFormat(data[i][j], Variables[j]);
+                    if (j != data[i].Length - 1) rowData += " \u2227 ";
                 }
 
                 rowData += ")";
-                if (i != combinedData.Count - 1) rowData += "\u2228 ";
+                if (i != data.Count - 1) rowData += "\u2228 ";
                 result += rowData;
             }
 

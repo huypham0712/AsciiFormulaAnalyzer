@@ -44,6 +44,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tbDisjunctiveSimplified = new System.Windows.Forms.TextBox();
             this.tbVariables = new System.Windows.Forms.TextBox();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbTreeGraph)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTruthTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimplifiedTruthTable)).BeginInit();
@@ -55,8 +57,9 @@
             this.tbInput.Location = new System.Drawing.Point(20, 34);
             this.tbInput.Multiline = true;
             this.tbInput.Name = "tbInput";
-            this.tbInput.Size = new System.Drawing.Size(1292, 29);
+            this.tbInput.Size = new System.Drawing.Size(791, 29);
             this.tbInput.TabIndex = 0;
+            this.tbInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             // 
             // lbInput
             // 
@@ -71,7 +74,7 @@
             // btnProcess
             // 
             this.btnProcess.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProcess.Location = new System.Drawing.Point(1318, 34);
+            this.btnProcess.Location = new System.Drawing.Point(817, 34);
             this.btnProcess.Name = "btnProcess";
             this.btnProcess.Size = new System.Drawing.Size(117, 30);
             this.btnProcess.TabIndex = 2;
@@ -81,9 +84,9 @@
             // 
             // pbTreeGraph
             // 
-            this.pbTreeGraph.Location = new System.Drawing.Point(996, 293);
+            this.pbTreeGraph.Location = new System.Drawing.Point(618, 319);
             this.pbTreeGraph.Name = "pbTreeGraph";
-            this.pbTreeGraph.Size = new System.Drawing.Size(439, 426);
+            this.pbTreeGraph.Size = new System.Drawing.Size(439, 402);
             this.pbTreeGraph.TabIndex = 3;
             this.pbTreeGraph.TabStop = false;
             // 
@@ -131,9 +134,10 @@
             this.tbHexValue.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbHexValue.ForeColor = System.Drawing.Color.SteelBlue;
             this.tbHexValue.Location = new System.Drawing.Point(20, 202);
+            this.tbHexValue.Multiline = true;
             this.tbHexValue.Name = "tbHexValue";
             this.tbHexValue.ReadOnly = true;
-            this.tbHexValue.Size = new System.Drawing.Size(1415, 29);
+            this.tbHexValue.Size = new System.Drawing.Size(1037, 29);
             this.tbHexValue.TabIndex = 8;
             // 
             // label3
@@ -150,7 +154,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(353, 295);
+            this.label4.Location = new System.Drawing.Point(319, 295);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(170, 21);
             this.label4.TabIndex = 11;
@@ -166,7 +170,7 @@
             this.dgvSimplifiedTruthTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvSimplifiedTruthTable.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvSimplifiedTruthTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSimplifiedTruthTable.Location = new System.Drawing.Point(353, 319);
+            this.dgvSimplifiedTruthTable.Location = new System.Drawing.Point(319, 319);
             this.dgvSimplifiedTruthTable.MultiSelect = false;
             this.dgvSimplifiedTruthTable.Name = "dgvSimplifiedTruthTable";
             this.dgvSimplifiedTruthTable.ReadOnly = true;
@@ -182,7 +186,7 @@
             this.tbDisjunctive.Multiline = true;
             this.tbDisjunctive.Name = "tbDisjunctive";
             this.tbDisjunctive.ReadOnly = true;
-            this.tbDisjunctive.Size = new System.Drawing.Size(1415, 29);
+            this.tbDisjunctive.Size = new System.Drawing.Size(1037, 29);
             this.tbDisjunctive.TabIndex = 12;
             // 
             // label5
@@ -212,7 +216,7 @@
             this.tbDisjunctiveSimplified.Multiline = true;
             this.tbDisjunctiveSimplified.Name = "tbDisjunctiveSimplified";
             this.tbDisjunctiveSimplified.ReadOnly = true;
-            this.tbDisjunctiveSimplified.Size = new System.Drawing.Size(1415, 29);
+            this.tbDisjunctiveSimplified.Size = new System.Drawing.Size(1037, 29);
             this.tbDisjunctiveSimplified.TabIndex = 14;
             // 
             // tbVariables
@@ -220,16 +224,40 @@
             this.tbVariables.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbVariables.ForeColor = System.Drawing.Color.SteelBlue;
             this.tbVariables.Location = new System.Drawing.Point(20, 258);
+            this.tbVariables.Multiline = true;
             this.tbVariables.Name = "tbVariables";
             this.tbVariables.ReadOnly = true;
-            this.tbVariables.Size = new System.Drawing.Size(1415, 29);
+            this.tbVariables.Size = new System.Drawing.Size(1037, 31);
             this.tbVariables.TabIndex = 16;
+            // 
+            // btnReset
+            // 
+            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.Location = new System.Drawing.Point(940, 34);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(117, 30);
+            this.btnReset.TabIndex = 17;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(614, 295);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(106, 21);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Visualization";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1447, 727);
+            this.ClientSize = new System.Drawing.Size(1064, 725);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.tbVariables);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.tbDisjunctiveSimplified);
@@ -248,6 +276,7 @@
             this.Controls.Add(this.tbInput);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pbTreeGraph)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTruthTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimplifiedTruthTable)).EndInit();
@@ -274,6 +303,8 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tbDisjunctiveSimplified;
         private System.Windows.Forms.TextBox tbVariables;
+        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Label label7;
     }
 }
 

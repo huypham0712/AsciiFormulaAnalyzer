@@ -75,7 +75,7 @@ namespace AsciiFormulaAnalyzer
         private void ShowDisjunctiveNormalForm()
         {
             //perform the finding disjunctive normal form here
-            string disjunctiveNormalForm = myTree.FindDisjunctiveNormalForm();
+            string disjunctiveNormalForm = myTree.FindDisjunctiveNormalFormAsciiNotation();
             tbDisjunctive.Text = disjunctiveNormalForm;
         }
 
@@ -303,5 +303,18 @@ namespace AsciiFormulaAnalyzer
         }
 
         #endregion
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode.Equals(Keys.Enter))
+            {
+                btnProcess.PerformClick();
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            ResetForm();
+        }
     }
 }
