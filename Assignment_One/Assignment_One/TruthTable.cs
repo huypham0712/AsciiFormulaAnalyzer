@@ -85,7 +85,7 @@ namespace AsciiFormulaAnalyzer
                             {
                                 simplifiedData.Add(simplifiedRow);
                             }                        
-                        }
+                        }                  
                     }
                 }
 

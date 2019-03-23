@@ -75,7 +75,7 @@ namespace AsciiFormulaAnalyzer
         private void ShowDisjunctiveNormalForm()
         {
             //perform the finding disjunctive normal form here
-            string disjunctiveNormalForm = myTree.FindDisjunctiveNormalFormAsciiNotation();
+            string disjunctiveNormalForm = myTree.FindDisjunctiveNormalForm();
             tbDisjunctive.Text = disjunctiveNormalForm;
         }
 

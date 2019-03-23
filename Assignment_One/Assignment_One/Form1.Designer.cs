@@ -55,7 +55,6 @@
             // 
             this.tbInput.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbInput.Location = new System.Drawing.Point(20, 34);
-            this.tbInput.Multiline = true;
             this.tbInput.Name = "tbInput";
             this.tbInput.Size = new System.Drawing.Size(791, 29);
             this.tbInput.TabIndex = 0;

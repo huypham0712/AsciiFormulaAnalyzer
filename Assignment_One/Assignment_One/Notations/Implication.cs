@@ -37,7 +37,12 @@ namespace AsciiFormulaAnalyzer.Notations
 
         public override int ComputeTruthValue()
         {
-            return LeftFormula.TruthValue == RightFormula.TruthValue ? 1 : RightFormula.TruthValue;
+            if (LeftFormula.TruthValue == 1 && RightFormula.TruthValue == 0)
+            {
+                return 0;
+            }
+
+            return 1;
         }
     }
 }
