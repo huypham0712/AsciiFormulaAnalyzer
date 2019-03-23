@@ -197,32 +197,6 @@ namespace AsciiFormulaAnalyzer
             return result;
         }
 
-//        public string FindDisjunctiveNormalForm()
-//        {
-//            var tableValues = TruthTableHelper.GetPreComputeValues(Variables);
-//            var truthResult = ComputeTruthData();
-//            string result = "";
-//
-//            for (int i = 0; i < TruthTable.NumberOfRow; i++)
-//            {
-//                if (truthResult[i] != 0)
-//                {
-//                    string rowData = "(";
-//                    for (int j = 0; j < TruthTable.NumberOfColumn; j++)
-//                    {
-//                        rowData += GetDisjunctiveFormat(tableValues[j][i], Variables[j]);
-//                        if (j != TruthTable.NumberOfColumn - 1) rowData += " \u2227 ";
-//                    }
-//
-//                    rowData += ") ";
-//                    if (i != TruthTable.NumberOfRow - 1) rowData += "\u2228 ";
-//                    result += rowData;
-//                }
-//            }
-//
-//            return result;
-//        }
-
         /// <summary>
         /// Return the value in Logic notation format of the variable from the truth table
         /// </summary>
@@ -289,9 +263,6 @@ namespace AsciiFormulaAnalyzer
                 List<string> innerPair = new List<string>();
                 for (int j = 0; j < data[i].Length; j++)
                 {
-//                    rowData += GetDisjunctiveFormat(data[i][j], Variables[j]);
-//                    if (j != data[i].Length - 1) rowData += " \u2227 ";
-//
                     string variable = GetDisjunctiveFormat(data[i][j], Variables[j]);
                     string tmp = "";
                     if (innerPair.Count < 2)
@@ -315,10 +286,6 @@ namespace AsciiFormulaAnalyzer
                     rowData = tmp;
                 }
 
-//                rowData += ")";
-//                if (i != data.Count - 1) rowData += "\u2228 ";
-//                result += rowData;
-
                 if (outerPair.Count < 2) outerPair.Add(rowData);
                 
                 if (outerPair.Count == 2)
@@ -338,82 +305,11 @@ namespace AsciiFormulaAnalyzer
                 
                 if (i != TruthTable.NumberOfRow - 1)
                 {
-                    result += rowData;
-                }
-                else
-                {
                     result = rowData;
                 }
             }
 
             return result;
-
-//            var tableValues = TruthTableHelper.GetPreComputeValues(Variables);
-//            var truthResult = ComputeTruthData();
-//            string result = "";
-//
-//            List<string> outerPair = new List<string>();
-//            for (int i = 0; i < TruthTable.NumberOfRow; i++)
-//            {
-//                string outerPairTmp = "";
-//                if (truthResult[i] != 0)
-//                {
-//                    string rowData = "";
-//                    List<string> innerPair = new List<string>();
-//                    for (int j = 0; j < TruthTable.NumberOfColumn; j++)
-//                    {
-//                        string variable = GetDisjunctiveFormat(tableValues[j][i], Variables[j]);
-//                        string tmp = "";
-//                        if (innerPair.Count < 2)
-//                        {
-//                            innerPair.Add(variable);
-//                        }
-//
-//                        if (innerPair.Count == 2)
-//                        {
-//                            tmp = $"&({innerPair[0]},{innerPair[1]})";
-//                            innerPair.Clear();
-//                            innerPair.Add(tmp);
-//                        }
-//
-//                        if (innerPair.Count == 1 && j == TruthTable.NumberOfColumn - 1)
-//                        {
-//                            tmp = $"{innerPair[0]}";
-//                            innerPair.Clear();
-//                        }
-//
-//                        rowData = tmp;
-//                    }
-//
-//                    if (outerPair.Count < 2) outerPair.Add(rowData);
-//
-//                    if (outerPair.Count == 2)
-//                    {
-//                        outerPairTmp = $"|({outerPair[0]},{outerPair[1]})";
-//                        outerPair.Clear();
-//                        outerPair.Add(outerPairTmp);
-//                    }
-//
-//                    if (outerPair.Count == 1 && i == TruthTable.NumberOfRow - 1)
-//                    {
-//                        outerPairTmp = $"{outerPair[0]}";
-//                        outerPair.Clear();
-//                    }
-//
-//                    rowData = outerPairTmp;
-//
-//                    if (i != TruthTable.NumberOfRow - 1)
-//                    {
-//                        result += rowData;
-//                    }
-//                    else
-//                    {
-//                        result = rowData;
-//                    }
-//                }
-//            }
-//
-//            return result;
         }
     }
 }
