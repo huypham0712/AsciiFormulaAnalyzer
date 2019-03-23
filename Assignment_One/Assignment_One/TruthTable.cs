@@ -87,6 +87,11 @@ namespace AsciiFormulaAnalyzer
                             }                        
                         }                  
                     }
+
+                    if (previousGroup.Contains("*") && !canBeSimplified)
+                    {
+                        simplifiedData.Add(previousGroup);
+                    }
                 }
 
                 if (simplifiedData.Any())
