@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AsciiFormulaAnalyzer.Notations
+namespace AsciiFormulaAnalyzer
 {
     public class Disjunction : AsciiFormula
     {
@@ -16,11 +16,12 @@ namespace AsciiFormulaAnalyzer.Notations
 
         public override string DrawGraph(ref int index, int preIndex = 0)
         {
-            string result = Environment.NewLine + $"node{index} [ label = \"\u2228\" ]";
+            string result = $"\nnode{index} [ label = \"\u2228\" ]";
             int pre = index;
 
-            if (preIndex != 0) {
-                result += Environment.NewLine + $"node{preIndex} -- node{index}";
+            if (preIndex != 0)
+            {
+                result += $"\nnode{preIndex} -- node{index}";
             }
 
             index++;
@@ -38,6 +39,12 @@ namespace AsciiFormulaAnalyzer.Notations
             }
 
             return 0;
+        }
+
+        public override AsciiFormula Nandify()
+        {
+            return new Nand(new Nand(LeftFormula.Nandify(), LeftFormula.Nandify()),
+                new Nand(RightFormula.Nandify(), RightFormula.Nandify()));
         }
     }
 }

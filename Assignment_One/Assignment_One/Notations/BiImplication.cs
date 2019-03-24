@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AsciiFormulaAnalyzer.Notations
+namespace AsciiFormulaAnalyzer
 {
     public class BiImplication : AsciiFormula
     {
@@ -17,6 +17,14 @@ namespace AsciiFormulaAnalyzer.Notations
             return 0;
         }
 
+        public override AsciiFormula Nandify()
+        {
+            return new Nand(
+                new Nand(new Nand(LeftFormula.Nandify(), LeftFormula.Nandify()),
+                    new Nand(RightFormula.Nandify(), RightFormula.Nandify())),
+                new Nand(LeftFormula.Nandify(), RightFormula.Nandify()));
+        }
+
         public BiImplication(AsciiFormula leftFormula, AsciiFormula rightFormula)
         {
             LeftFormula = leftFormula;
@@ -25,11 +33,12 @@ namespace AsciiFormulaAnalyzer.Notations
 
         public override string DrawGraph(ref int index, int preIndex = 0)
         {
-            string result = Environment.NewLine + $"node{index} [ label = \"\u21d4\" ]";
+            string result = $"\nnode{index} [ label = \"\u21d4\" ]";
             int pre = index;
 
-            if (preIndex != 0) {
-                result += Environment.NewLine + $"node{preIndex} -- node{index}";
+            if (preIndex != 0)
+            {
+                result += $"\nnode{preIndex} -- node{index}";
             }
 
             index++;

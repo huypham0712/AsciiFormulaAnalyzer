@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -9,21 +8,41 @@ namespace AsciiFormulaAnalyzer
 {
     public partial class MainForm : Form
     {
-        private AsciiTree myTree;
-        private string originalFormula;
+        private AsciiTree _myTree;
+        private string _originalFormula;
+        private SimplifiedTruthTableForm _simplifiedTruthTableForm;
         public MainForm()
         {
             InitializeComponent();
-            tbInput.MaxLength = Int32.MaxValue;
-            Text = "Ascii Formula Analyzer";
+
+            tbInput.MaxLength = int.MaxValue;
+            tbInput.ScrollBars = ScrollBars.Horizontal;
+            tbInput.WordWrap = false;
+            tbInput.Multiline = true;
+
+            tbDisjunctive.WordWrap = false;
+            tbDisjunctive.Multiline = true;
+            tbDisjunctive.ScrollBars = ScrollBars.Horizontal;
+
+            tbDisjunctiveSimplified.WordWrap = false;
+            tbDisjunctiveSimplified.Multiline = true;
+            tbDisjunctiveSimplified.ScrollBars = ScrollBars.Horizontal;
+
+            ttCheckBoxSimplifiedTruthTable.SetToolTip(cbSimplifiedTruthTable, "Check this to see the simplified truth table!\nUncheck to skip computing the simplified truth table!");
+
+            cbSimplifiedTruthTable.Checked = true;
+
+            btnViewTreeGraph.Enabled = false;
+
+            this.Text = "Ascii Formula Analyzer";
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            myTree = new AsciiTree();
+            _myTree = AsciiTree.GetAsciiTree();
         }
 
 
         private void btnProcess_Click(object sender, EventArgs e)
         {
-            //Check the formula
+            // Check the formula
             string userInput = Convert.ToString(tbInput.Text);
             if (string.IsNullOrWhiteSpace(userInput))
             {
@@ -32,145 +51,78 @@ namespace AsciiFormulaAnalyzer
                 return;
             }
 
-            if (!myTree.SetFormula(userInput))
+            if (!_myTree.SetFormula(userInput))
             {
                 MessageBox.Show("The formula is not in a correct format!!", "Error");
                 ResetForm();
                 return;
             }
 
-            originalFormula = userInput;
+            btnViewTreeGraph.Enabled = true;
 
-            //Show all variables in the formula
+            _originalFormula = userInput;
+
+            // Show all variables in the formula
             ShowVariable();
 
-            //Draw the graphical representation of the formula using GraphViz
-            DrawTree();
-
-            //Compute the truth value
+            // Compute the truth value
             CreateTruthTable();
 
-            //Compute the hexadecimal value from the truth table
+            // Compute the hexadecimal value from the truth table
             FindHexValue();
 
-            //Simplify the truth table
-            SimplifyTruthTable();
+            if (cbSimplifiedTruthTable.Checked)
+            {
+                //Simplify the truth table
+                ShowSimplifyTruthTableForm();
+            }
 
-            //Show the disjunctive normal form
+            // Show the disjunctive normal form
             ShowDisjunctiveNormalForm();
 
-            //Show the disjunctive from the simplified truth table
+            // Show the disjunctive from the simplified truth table
             ShowDisjunctiveSimplifiedForm();
+
+            // Show the nandified form of the original formula
+            ShowNandifiedForm();
         }
+
+        private void ShowNandifiedForm()
+        {
+            var nandifiedForm = _myTree.FindNandifiedForm();
+            string nandifiedString = nandifiedForm.ToString();
+            tbNandifiedForm.Text = nandifiedString;
+        }
+
+        private void ShowSimplifyTruthTableForm()
+        {
+            if (_simplifiedTruthTableForm != null)
+            {
+                _simplifiedTruthTableForm.Close();
+            }
+            _simplifiedTruthTableForm = new SimplifiedTruthTableForm(_originalFormula, _myTree);
+            _simplifiedTruthTableForm.SetDesktopLocation(this.Location.X + this.Height, this.Location.Y + this.Width);
+            _simplifiedTruthTableForm.Show();
+        }
+
+        #region Helper methods
 
         private void ShowDisjunctiveSimplifiedForm()
         {
-            string result = myTree.FindDisjunctiveSimplifiedForm();
+            string result = _myTree.FindDisjunctiveSimplifiedForm();
             tbDisjunctiveSimplified.Text = result;
         }
-
-
-        #region Helper methods
 
         private void ShowDisjunctiveNormalForm()
         {
             //perform the finding disjunctive normal form here
-            string disjunctiveNormalForm = myTree.FindDisjunctiveNormalForm();
+            string disjunctiveNormalForm = _myTree.FindDisjunctiveNormalForm();
             tbDisjunctive.Text = disjunctiveNormalForm;
-        }
-
-        private void SimplifyTruthTable()
-        {
-            if (myTree.MainFormula == null)
-            {
-                MessageBox.Show("Could not provide a truth table for an empty formula!!", "Error");
-                return;
-            }
-            try
-            {
-                //Compute truth value
-                TruthTable myTruthTable = myTree.TruthTable;
-                var truthTableValues = TruthTableHelper.GetPreComputeValues(myTree.Variables);
-                var truthTableResult = myTruthTable.ComputeTruthTable();
-                var result = myTruthTable.ComputeSimplifiedTruthTable();
-                var falseRows = TruthTableHelper.GetFalseRows(truthTableValues, truthTableResult, myTree.Variables);
-
-                //Setup DataGridView             
-                dgvSimplifiedTruthTable.Name = "Simplified Truth Table";
-                dgvSimplifiedTruthTable.RowHeadersVisible = false;
-                dgvSimplifiedTruthTable.AutoSize = true;
-                
-
-                if (result != null)
-                {
-                    dgvSimplifiedTruthTable.ColumnCount = myTruthTable.NumberOfColumn + 1;
-                    dgvSimplifiedTruthTable.RowCount = falseRows.Count + GetNrOfSimplifiedRows(result);
-
-                    for (int i = 0; i < myTruthTable.NumberOfColumn; i++)
-                    {
-                        dgvSimplifiedTruthTable.Columns[i].Name = myTruthTable.Variables[i].Proposition.ToString();
-                    }
-
-                    dgvSimplifiedTruthTable.Columns[dgvSimplifiedTruthTable.ColumnCount - 1].Name = originalFormula;
-                    dgvSimplifiedTruthTable.Rows.Clear();
-
-                 
-                    for (int j = 0; j < falseRows.Count; j++)
-                    {
-                        string[] rows = new string[falseRows[j].Length + 1];
-                        falseRows[j].CopyTo(rows, 0);
-                        rows[falseRows[j].Length] = "0";
-                        dgvSimplifiedTruthTable.Rows.Add(rows);
-                    }
-
-                    foreach (var listOfSimplifiedRows in result)
-                    {
-                        for (int i = 0; i < listOfSimplifiedRows.Count; i++)
-                        {
-                            string[] rows = new string[listOfSimplifiedRows[i].Length + 1];
-                            listOfSimplifiedRows[i].CopyTo(rows, 0);
-                            rows[listOfSimplifiedRows[i].Length] = "1";
-                            dgvSimplifiedTruthTable.Rows.Add(rows);
-                        }
-                    }
-                    
-                }
-                else
-                {
-                    dgvSimplifiedTruthTable.ColumnCount = 1;
-                    dgvSimplifiedTruthTable.RowCount = 1;
-                    dgvSimplifiedTruthTable.Rows.Clear();
-                    string[] errorMessage = { "Could not simplify the truth table of this formula!!" };
-                    dgvSimplifiedTruthTable.Rows.Add(errorMessage);
-                }
-             
-                foreach (DataGridViewColumn column in dgvSimplifiedTruthTable.Columns)
-                {
-                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-                throw;
-            }
-        }
-
-        private int GetNrOfSimplifiedRows(List<List<string[]>> simplifiedData)
-        {
-            int result = 0;
-            foreach (var listOfData in simplifiedData)
-            {
-                result += listOfData.Count;
-            }
-
-            return result;
         }
 
         private void FindHexValue()
         {
-            List<int> truthValues = myTree.TruthTable.ComputeTruthTable();
+            List<int> truthValues = _myTree.TruthTable.ComputeTruthTable();
             string binaryString = "";
 
             for (int i = truthValues.Count - 1; i >= 0; i--)
@@ -183,7 +135,7 @@ namespace AsciiFormulaAnalyzer
 
         private void CreateTruthTable()
         {
-            if (myTree.MainFormula == null)
+            if (_myTree.MainFormula == null)
             {
                 MessageBox.Show("Could not provide a truth table for an empty formula!!", "Error");
                 return;
@@ -191,8 +143,8 @@ namespace AsciiFormulaAnalyzer
             try
             {
                 //Compute truth value
-                TruthTable myTruthTable = myTree.TruthTable;
-                List<int[]> preComputeData = TruthTableHelper.GetPreComputeValues(myTree.Variables);
+                TruthTable myTruthTable = _myTree.TruthTable;
+                List<int[]> preComputeData = TruthTableHelper.GetPreComputeValues(_myTree.Variables);
                 List<int> result = myTruthTable.ComputeTruthTable();
 
                 //Setup DataGridView
@@ -207,7 +159,7 @@ namespace AsciiFormulaAnalyzer
                     dgvTruthTable.Columns[i].Name = myTruthTable.Variables[i].Proposition.ToString();
                 }
 
-                dgvTruthTable.Columns[dgvTruthTable.ColumnCount - 1].Name = originalFormula;
+                dgvTruthTable.Columns[dgvTruthTable.ColumnCount - 1].Name = _originalFormula;
 
                 for (int i = 0; i < myTruthTable.Variables.Count + 1; i++)
                 {
@@ -234,23 +186,20 @@ namespace AsciiFormulaAnalyzer
 
         private void ResetForm()
         {
-            myTree = new AsciiTree();
-
+            _myTree = AsciiTree.GetAsciiTree();
             tbInput.Clear();
             tbVariables.Clear();
             tbDisjunctive.Clear();
             tbDisjunctiveSimplified.Clear();
+            tbNandifiedForm.Clear();
             tbHexValue.Clear();
             dgvTruthTable.Rows.Clear();
             dgvTruthTable.Columns.Clear();
-            dgvSimplifiedTruthTable.Rows.Clear();
-            dgvSimplifiedTruthTable.Columns.Clear();
-            pbTreeGraph.ImageLocation = @"Resources/Images/empty.png";
         }
 
         private void DrawTree()
         {
-            if (myTree.MainFormula == null)
+            if (_myTree.MainFormula == null)
             {
                 MessageBox.Show("Could not provide a tree for an empty formula!!", "Error");
                 return;
@@ -259,7 +208,7 @@ namespace AsciiFormulaAnalyzer
             try
             {
                 int index = 1;
-                string graphVizFormat = "graph logic { \r\nnode [ fontname = \"Sans serif\" ] " + myTree.MainFormula.DrawGraph(ref index) + "\r\n}";
+                string graphVizFormat = "graph logic { \r\nnode [ fontname = \"Sans serif\" ] " + _myTree.MainFormula.DrawGraph(ref index) + "\r\n}";
                 File.WriteAllText(@"treeObjects.dot", graphVizFormat);
 
                 Process dot = new Process();
@@ -267,8 +216,9 @@ namespace AsciiFormulaAnalyzer
                 dot.StartInfo.Arguments = "-Tpng -otreeObjects.png treeObjects.dot";
                 dot.Start();
                 dot.WaitForExit();
-                pbTreeGraph.SizeMode = PictureBoxSizeMode.StretchImage;
-                pbTreeGraph.ImageLocation = @"treeObjects.png";
+
+                // Open the image by the default application
+                Process.Start(@"treeObjects.png");
             }
             catch (Exception e)
             {
@@ -278,7 +228,7 @@ namespace AsciiFormulaAnalyzer
 
         private void ShowVariable()
         {
-            if (myTree.MainFormula == null)
+            if (_myTree.MainFormula == null)
             {
                 MessageBox.Show("Please supply a formula!!", "Error");
                 return;
@@ -288,10 +238,10 @@ namespace AsciiFormulaAnalyzer
             {
                 tbVariables.Clear();
                 string variablesList = "";
-                for (int i = 0; i < myTree.Variables.Count; i++)
+                for (int i = 0; i < _myTree.Variables.Count; i++)
                 {
-                    variablesList += myTree.Variables[i].Proposition.ToString();
-                    if (i != myTree.Variables.Count - 1) variablesList += ", ";
+                    variablesList += _myTree.Variables[i].Proposition.ToString();
+                    if (i != _myTree.Variables.Count - 1) variablesList += ", ";
                 }
 
                 tbVariables.Text = variablesList;
@@ -315,6 +265,11 @@ namespace AsciiFormulaAnalyzer
         private void btnReset_Click(object sender, EventArgs e)
         {
             ResetForm();
+        }
+
+        private void btnViewTreeGraph_Click(object sender, EventArgs e)
+        {
+            DrawTree();
         }
     }
 }

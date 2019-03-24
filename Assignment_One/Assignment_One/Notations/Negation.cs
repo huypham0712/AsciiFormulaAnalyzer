@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AsciiFormulaAnalyzer.Notations
+﻿namespace AsciiFormulaAnalyzer
 {
     public class Negation : AsciiFormula
     {
@@ -18,11 +12,12 @@ namespace AsciiFormulaAnalyzer.Notations
 
         public override string DrawGraph(ref int index, int preIndex = 0)
         {
-            string result = Environment.NewLine + $"node{index} [ label = \"\u00ac\" ]";
+            string result = $"\nnode{index} [ label = \"\u00ac\" ]";
             int pre = index;
 
-            if (preIndex != 0) {
-                result += Environment.NewLine + $"node{preIndex} -- node{index}";
+            if (preIndex != 0)
+            {
+                result += $"\nnode{preIndex} -- node{index}";
             }
 
             index++;
@@ -34,6 +29,11 @@ namespace AsciiFormulaAnalyzer.Notations
         public override int ComputeTruthValue()
         {
             return OnlyFormula.TruthValue == 1 ? 0 : 1;
+        }
+
+        public override AsciiFormula Nandify()
+        {
+            return new Nand(OnlyFormula.Nandify(), OnlyFormula.Nandify());
         }
     }
 }

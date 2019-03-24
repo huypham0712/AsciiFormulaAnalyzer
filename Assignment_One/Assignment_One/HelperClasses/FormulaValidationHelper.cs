@@ -5,10 +5,10 @@ namespace AsciiFormulaAnalyzer
 {
     internal static class FormulaValidationHelper
     {
-        private static readonly char[] ValidNotation = { '>', '&', '~', '|', '=' };
+        private static readonly char[] ValidNotation = { '>', '&', '~', '|', '=', '%' };
         public static bool CheckValidFormula(string userInput)
         {
-            if (String.IsNullOrWhiteSpace(userInput))
+            if (string.IsNullOrWhiteSpace(userInput))
                 return false;
 
             string formula = IgnoreSpaces(userInput);
@@ -74,7 +74,7 @@ namespace AsciiFormulaAnalyzer
 
         private static string IgnoreSpaces(string original)
         {
-            if (!original.Contains(" ") || String.IsNullOrWhiteSpace(original))
+            if (!original.Contains(" ") || string.IsNullOrWhiteSpace(original))
             {
                 return original;
             }

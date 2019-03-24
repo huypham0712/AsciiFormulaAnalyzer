@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsciiFormulaAnalyzer.Notations
+namespace AsciiFormulaAnalyzer
 {
     public class Implication : AsciiFormula
     {
@@ -20,12 +20,12 @@ namespace AsciiFormulaAnalyzer.Notations
 
         public override string DrawGraph(ref int index, int preIndex)
         {
-            string result = Environment.NewLine + $"node{index} [ label = \"\u21d2\" ]";
+            string result = $"\nnode{index} [ label = \"\u21d2\" ]";
             int pre = index;
 
             if (preIndex != 0)
             {
-                result += Environment.NewLine + $"node{preIndex} -- node{index}";
+                result += $"\nnode{preIndex} -- node{index}";
             }
 
             index++;
@@ -43,6 +43,11 @@ namespace AsciiFormulaAnalyzer.Notations
             }
 
             return 1;
+        }
+
+        public override AsciiFormula Nandify()
+        {
+            return new Nand(LeftFormula.Nandify(), new Nand(RightFormula.Nandify(), RightFormula.Nandify()));
         }
     }
 }

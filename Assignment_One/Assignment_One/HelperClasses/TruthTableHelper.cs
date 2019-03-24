@@ -157,5 +157,16 @@ namespace AsciiFormulaAnalyzer
 
             return result;
         }
+
+        public static int GetNrOfSimplifiedRows(List<List<string[]>> simplifiedData)
+        {
+            int result = 0;
+            foreach (var listOfData in simplifiedData)
+            {
+                result += listOfData.Count;
+            }
+
+            return result;
+        }
     }
 }

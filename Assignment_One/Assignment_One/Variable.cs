@@ -39,6 +39,11 @@ namespace AsciiFormulaAnalyzer
             return TruthValue;
         }
 
+        public override AsciiFormula Nandify()
+        {
+            return this;
+        }
+
         public int CompareTo(Variable other)
         {
             return this.Proposition.CompareTo(other.Proposition);
